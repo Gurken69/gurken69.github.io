@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bildergalerie - Ahoi-Touren</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Bildergalerie</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Startseite</a></li>
+                <li><a href="prices.html">Preise</a></li>
+                <li><a href="pictures.html">Bilder</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="content">
+            <h2>Unsere Aktivitäten in Bildern</h2>
+            <div class="slider">
+                <button class="prev" onclick="prevImage()">&#10094;</button>
+                <img id="slider-image" src="images/schiff1.jpeg" alt="Aktivität 1" width="600" height="400">
+                <button class="next" onclick="nextImage()">&#10095;</button>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>Informationen erhalten Sie unter 0201/33355.</p>
+    </footer>
+    <script>
+        const images = [
+            "images/schiff1.jpeg",
+            "images/sommer_2023.jpg",
+            "https://www2.pic-upload.de/img/37482898/Unbenannt.png",
+            "images/holland.jpeg"
+        ];
+        let currentIndex = 0;
+
+        function showImage(index) {
+            const sliderImage = document.getElementById("slider-image");
+            sliderImage.src = images[index];
+        }
+
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            showImage(currentIndex);
+        }
+
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % images.length;
+            showImage(currentIndex);
+        }
+    </script>
+</body>
+</html>
