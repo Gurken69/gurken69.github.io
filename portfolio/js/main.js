@@ -1,28 +1,18 @@
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("Portfolio website loaded!");
-
-    // Smooth scrolling for navigation links
-    const navLinks = document.querySelectorAll("nav a");
-    navLinks.forEach(link => {
-        link.addEventListener("click", (e) => {
+document.addEventListener('DOMContentLoaded', () => {
+    // Smooth scroll for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            const targetId = link.getAttribute("href").replace(".html", "");
-            const targetSection = document.querySelector(`#${targetId}`);
-            if (targetSection) {
-                targetSection.scrollIntoView({ behavior: "smooth" });
-            } else {
-                window.location.href = link.getAttribute("href");
-            }
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
         });
     });
 
-    // Add a fade-in effect for the hero section
-    const hero = document.querySelector(".hero");
-    if (hero) {
-        hero.style.opacity = 0;
-        hero.style.transition = "opacity 1.5s ease-in-out";
-        setTimeout(() => {
-            hero.style.opacity = 1;
-        }, 200);
-    }
+    // Add parallax effect to hero section
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const hero = document.querySelector('.hero');
+        hero.style.backgroundPositionY = scrolled * 0.5 + 'px';
+    });
 });
