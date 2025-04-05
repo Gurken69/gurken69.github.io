@@ -1,0 +1,54 @@
+:root {
+    --primary-color: #2563eb;
+    --secondary-color: #1e40af;
+    --bg-color: #f8fafc;
+    --text-color: #1f2937;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+header {
+    background-color: var(--primary-color);
+    padding: 1rem;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+}
+
+nav a.active {
+    background-color: var(--secondary-color);
+}
+
+.hero {
+    text-align: center;
+    padding: 5rem 1rem;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.cta-button {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 1rem;
+}
