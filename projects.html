@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projekte - Developer Portfolio</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="glass-nav">
+        <nav>
+            <div class="logo">Portfolio</div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">Über Mich</a></li>
+                <li><a href="projects.html" class="active">Projekte</a></li>
+                <li><a href="contact.html">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="animate-title">Projekte</h1>
+                <p class="animate-text">Hier sind ein paar Sachen, an denen ich bastle</p>
+                
+                <div class="project-filters">
+                    <button class="filter-btn active" data-filter="current">Aktuell</button>
+                    <button class="filter-btn" data-filter="archived">Archiv</button>
+                </div>
+
+                <div class="content-wrapper">
+                    <div class="projects-grid animate-text" id="current-projects">
+                        <div class="project-card wip">
+                            <div class="project-content">
+                                <h3>Social Media Dashboard</h3>
+                                <p>Ein Dashboard für alle deine Social Media Accounts 🚧</p>
+                                <div class="skills">
+                                    <span class="skill-tag">React</span>
+                                    <span class="skill-tag">TypeScript</span>
+                                </div>
+                                <div class="wip-badge">In Entwicklung</div>
+                            </div>
+                        </div>
+
+                        <div class="project-card wip">
+                            <div class="project-content">
+                                <h3>RPG Adventure</h3>
+                                <p>Ein spannendes RPG 🎮</p>
+                                <div class="skills">
+                                    <span class="skill-tag">Unity</span>
+                                    <span class="skill-tag">C#</span>
+                                </div>
+                                <div class="wip-badge">In Entwicklung</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="projects-grid animate-text hidden" id="archived-projects">
+                        <div class="project-card archived">
+                            <div class="project-content">
+                                <h3>Meine erste Website</h3>
+                                <p>Eine Schulaufgabe mit viel ❤️</p>
+                                <div class="skills">
+                                    <span class="skill-tag">HTML</span>
+                                    <span class="skill-tag">CSS</span>
+                                </div>
+                                <div class="archived-badge">Archiviert</div>
+                                <div class="project-links">
+                                    <a href="https://github.com/BrosZocken/first-website" target="_blank" class="cta-button secondary">
+                                        <i class="fab fa-github"></i> Code
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="project-card archived">
+                            <div class="project-content">
+                                <h3>Alano Snake Game (2022)</h3>
+                                <p>Mein erstes Python Spiel 🐍</p>
+                                <div class="skills">
+                                    <span class="skill-tag">Python</span>
+                                    <span class="skill-tag">pygame</span>
+                                </div>
+                                <div class="archived-badge">Archiviert</div>
+                                <div class="project-links">
+                                    <a href="https://github.com/BrosZocken/snake-game" target="_blank" class="cta-button secondary">
+                                        <i class="fab fa-github"></i> Code
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a href="https://github.com/BrosZocken" target="_blank" class="social-icon">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                    <a href="https://txnjro.itch.io/" target="_blank" class="social-icon">
+                        <i class="fab fa-itch-io"></i> Itch.io
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Developer Portfolio</p>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,10 +1,9 @@
-<!-- This is a simple developer portfolio template in HTML and CSS. It includes sections for about, projects, and contact information. The design is responsive and uses modern CSS techniques. -->
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Developer Portfolio</title>
+    <title>Über Mich - Developer Portfolio</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -13,8 +12,8 @@
         <nav>
             <div class="logo">Portfolio</div>
             <ul>
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="about.html">Über Mich</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">Über Mich</a></li>
                 <li><a href="projects.html">Projekte</a></li>
                 <li><a href="contact.html">Kontakt</a></li>
             </ul>
@@ -24,12 +23,28 @@
     <main>
         <section class="hero">
             <div class="hero-content">
-                <h1 class="animate-title">Hi, ich bin Hendrik</h1>
-                <p class="animate-text">Und das ist mein Portfolio.</p>
-                <div class="cta-buttons">
-                    <a href="projects.html" class="cta-button primary">Meine Projekte</a>
-                    <a href="about.html" class="cta-button secondary">Mehr über mich</a>
+                <h1 class="animate-title">Über Mich</h1>
+                <p class="animate-text">Hi, schön dass du hier bist!</p>
+                
+                <div class="about-container animate-text">
+                    <div class="profile-section">
+                        <div class="profile-image-container">
+                            <img src="images/gengar.png" alt="Profilbild" class="profile-image">
+                        </div>
+                        <div class="about-text">
+                            <p>Hey! Ich bin ein junger Dev, der einfach Spaß daran hat, Sachen zu coden.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="skills-section">
+                        <h3>Skills</h3>
+                        <div class="skills-grid">
+                            <span class="skill-tag">C++</span>
+                            <span class="skill-tag">HTML</span>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="social-links">
                     <a href="https://github.com/BrosZocken" target="_blank" class="social-icon">
                         <i class="fab fa-github"></i> GitHub
