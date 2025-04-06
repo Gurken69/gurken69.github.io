@@ -1,43 +1,44 @@
-# Multi-Page Website Project
+# Personal Developer Portfolio
 
-## Overview
-This project is a multi-page website for showcasing activities and services related to river and lake tours. It includes a home page, a price chart page, and a pictures page, along with associated CSS and JavaScript files for styling and interactivity.
+A responsive personal portfolio website showcasing my projects and skills.
 
-## Project Structure
-```
-multi-page-website
-├── index.html         # Home page of the website
-├── prices.html        # Page displaying the price chart
-├── pictures.html      # Page showcasing pictures related to services
-├── css
-│   └── styles.css     # Styles for the website
-├── js
-│   └── scripts.js     # JavaScript for interactive features
-└── README.md          # Documentation for the project
-```
+## Features
 
-## Setup Instructions
-1. **Clone the Repository**: 
-   Clone this repository to your local machine using:
-   ```
-   git clone <repository-url>
-   ```
+- 🎨 Modern glass-morphism design
+- 📱 Fully responsive layout
+- 🔍 Project filtering system
+- ✨ Smooth animations
+- 🏷️ Skill tag display system
 
-2. **Navigate to the Project Directory**:
-   ```
-   cd multi-page-website
-   ```
+## Pages
 
-3. **Open the Project**:
-   Open `index.html` in your web browser to view the home page.
+- **Home** - Welcome section
+- **About** - Personal information and skills
+- **Projects** - Portfolio of current and archived projects
+- **Contact** - Contact information and social links
 
-4. **Access Other Pages**:
-   Use the navigation links on the home page to access the price chart and pictures pages.
+## Technologies Used
 
-## Additional Information
-- The CSS file (`css/styles.css`) contains all the styles for the website, ensuring a consistent look and feel across all pages.
-- The JavaScript file (`js/scripts.js`) is intended for any interactive features that may be added in the future.
-- Ensure that all images used in the `pictures.html` page are properly referenced and accessible.
+- HTML5
+- CSS3
+- JavaScript
+- Font Awesome Icons
+
+## Project Categories
+
+### Current Projects
+- RPG Adventure Game (Java)
+- Upcoming project (TBA)
+
+### Archived Projects
+- First Website (HTML/CSS)
+- Alano Snake Game (Python/pygame)
+
+## Social Links
+
+- GitHub: [@BrosZocken](https://github.com/BrosZocken)
+- Itch.io: [@txnjro](https://txnjro.itch.io/)
 
 ## License
-This project is licensed under the MIT License.
+
+© 2025 Developer Portfolio. All rights reserved.
