@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Shooter</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #000;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            cursor: none;
+        }
+
+        #game-container {
+            width: 800px;
+            height: 600px;
+            background: linear-gradient(to bottom, #000033, #000066);
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(0, 150, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #player {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            clip-path: polygon(50% 0%, 100% 100%, 50% 70%, 0% 100%);
+            position: absolute;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+        }
+
+        .enemy {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(45deg, #ff3b30, #ff9500);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            position: absolute;
+            transition: transform 0.2s;
+        }
+
+        .enemy-fast {
+            width: 25px;
+            height: 25px;
+            background: linear-gradient(45deg, #ff0000, #ff6600);
+            clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+            position: absolute;
+            transition: transform 0.1s;
+        }
+
+        .enemy-boss {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #ff0066, #9900cc);
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+            position: absolute;
+            transition: transform 0.3s;
+            box-shadow: 0 0 20px rgba(255, 0, 102, 0.5);
+        }
+
+        .bullet {
+            width: 6px;
+            height: 15px;
+            background: #fff;
+            border-radius: 3px;
+            position: absolute;
+            box-shadow: 0 0 10px #fff;
+        }
+
+        #score {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+        }
+
+        .power-up {
+            width: 25px;
+            height: 25px;
+            position: absolute;
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+
+        .power-up-speed {
+            background: linear-gradient(45deg, #00ff00, #66ff00);
+            box-shadow: 0 0 15px #00ff00;
+        }
+
+        .power-up-damage {
+            background: linear-gradient(45deg, #ff0000, #ff6600);
+            box-shadow: 0 0 15px #ff0000;
+        }
+
+        .power-up-multishot {
+            background: linear-gradient(45deg, #00ffff, #0066ff);
+            box-shadow: 0 0 15px #00ffff;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        #stats {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #fff;
+            font-size: 16px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="score">Score: 0</div>
+        <div id="player"></div>
+        <div id="stats">
+            Speed: 1x<br>
+            Damage: 1x<br>
+            Shots: 1
+        </div>
+    </div>
+
+    <script>
+        const gameContainer = document.getElementById('game-container');
+        const player = document.getElementById('player');
+        const scoreDisplay = document.getElementById('score');
+        const statsDisplay = document.getElementById('stats');
+        let score = 0;
+        let playerStats = {
+            speed: 1,
+            damage: 1,
+            multishot: 1
+        };
+
+        // Create starfield background
+        function createStars() {
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.opacity = Math.random();
+                gameContainer.appendChild(star);
+            }
+        }
+        createStars();
+
+        // Player movement
+        gameContainer.addEventListener('mousemove', (e) => {
+            const rect = gameContainer.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            player.style.left = x + 'px';
+            player.style.top = y + 'px';
+        });
+
+        // Shooting
+        gameContainer.addEventListener('click', (e) => {
+            for(let i = 0; i < playerStats.multishot; i++) {
+                const bullet = document.createElement('div');
+                bullet.className = 'bullet';
+                bullet.style.left = player.offsetLeft + 'px';
+                bullet.style.top = player.offsetTop + 'px';
+                
+                // Spread bullets if multishot
+                const spread = (i - (playerStats.multishot - 1) / 2) * 5;
+                bullet.dataset.speedX = spread;
+                
+                gameContainer.appendChild(bullet);
+
+                const move = setInterval(() => {
+                    const currentTop = parseInt(bullet.style.top);
+                    const currentLeft = parseInt(bullet.style.left);
+                    bullet.style.top = currentTop - (10 * playerStats.speed) + 'px';
+                    bullet.style.left = currentLeft + parseFloat(bullet.dataset.speedX) + 'px';
+
+                    if (currentTop < -20) {
+                        clearInterval(move);
+                        gameContainer.removeChild(bullet);
+                    }
+
+                    // Check collision with enemies
+                    document.querySelectorAll('.enemy, .enemy-fast, .enemy-boss').forEach(enemy => {
+                        const bulletRect = bullet.getBoundingClientRect();
+                        const enemyRect = enemy.getBoundingClientRect();
+
+                        if (bulletRect.left < enemyRect.right &&
+                            bulletRect.right > enemyRect.left &&
+                            bulletRect.top < enemyRect.bottom &&
+                            bulletRect.bottom > enemyRect.top) {
+                            
+                            enemy.health--;
+                            if (enemy.health <= 0) {
+                                score += enemy.points;
+                                scoreDisplay.textContent = `Score: ${score}`;
+                                gameContainer.removeChild(enemy);
+                            }
+                            gameContainer.removeChild(bullet);
+                            clearInterval(move);
+                        }
+                    });
+                }, 20);
+            }
+        });
+
+        // Create enemies
+        function createEnemy() {
+            const enemyType = Math.random();
+            const enemy = document.createElement('div');
+            
+            if (enemyType < 0.6) { // Regular enemy - 60% chance
+                enemy.className = 'enemy';
+                enemy.health = 1;
+                enemy.speed = 2;
+                enemy.points = 10;
+            } else if (enemyType < 0.9) { // Fast enemy - 30% chance
+                enemy.className = 'enemy-fast';
+                enemy.health = 1;
+                enemy.speed = 4;
+                enemy.points = 15;
+            } else { // Boss enemy - 10% chance
+                enemy.className = 'enemy-boss';
+                enemy.health = 3;
+                enemy.speed = 1;
+                enemy.points = 50;
+            }
+
+            enemy.style.left = Math.random() * (gameContainer.offsetWidth - 30) + 'px';
+            enemy.style.top = '-30px';
+            gameContainer.appendChild(enemy);
+
+            let pos = -30;
+            const fall = setInterval(() => {
+                pos += enemy.speed;
+                enemy.style.top = pos + 'px';
+                enemy.style.transform = `rotate(${pos}deg)`;
+
+                // Check collision with player
+                const playerRect = player.getBoundingClientRect();
+                const enemyRect = enemy.getBoundingClientRect();
+
+                if (playerRect.left < enemyRect.right &&
+                    playerRect.right > enemyRect.left &&
+                    playerRect.top < enemyRect.bottom &&
+                    playerRect.bottom > enemyRect.top) {
+                    // Game over logic here
+                    alert('Game Over! Score: ' + score);
+                    location.reload();
+                }
+
+                if (pos >= gameContainer.offsetHeight) {
+                    clearInterval(fall);
+                    gameContainer.removeChild(enemy);
+                }
+            }, 20);
+        }
+
+        // Create power-ups
+        function createPowerUp() {
+            const types = ['speed', 'damage', 'multishot'];
+            const type = types[Math.floor(Math.random() * types.length)];
+            const powerUp = document.createElement('div');
+            powerUp.className = `power-up power-up-${type}`;
+            powerUp.powerUpType = type;
+            powerUp.style.left = Math.random() * (gameContainer.offsetWidth - 25) + 'px';
+            powerUp.style.top = '-25px';
+            gameContainer.appendChild(powerUp);
+
+            let pos = -25;
+            const fall = setInterval(() => {
+                pos += 2;
+                powerUp.style.top = pos + 'px';
+
+                // Check collision with player
+                const playerRect = player.getBoundingClientRect();
+                const powerUpRect = powerUp.getBoundingClientRect();
+
+                if (playerRect.left < powerUpRect.right &&
+                    playerRect.right > powerUpRect.left &&
+                    playerRect.top < powerUpRect.bottom &&
+                    playerRect.bottom > powerUpRect.top) {
+                    
+                    collectPowerUp(powerUp.powerUpType);
+                    clearInterval(fall);
+                    gameContainer.removeChild(powerUp);
+                }
+
+                if (pos >= gameContainer.offsetHeight) {
+                    clearInterval(fall);
+                    gameContainer.removeChild(powerUp);
+                }
+            }, 20);
+        }
+
+        function collectPowerUp(type) {
+            switch(type) {
+                case 'speed':
+                    playerStats.speed += 0.2;
+                    break;
+                case 'damage':
+                    playerStats.damage += 0.5;
+                    break;
+                case 'multishot':
+                    playerStats.multishot = Math.min(playerStats.multishot + 1, 5);
+                    break;
+            }
+            updateStats();
+        }
+
+        function updateStats() {
+            statsDisplay.innerHTML = `
+                Speed: ${playerStats.speed.toFixed(1)}x<br>
+                Damage: ${playerStats.damage.toFixed(1)}x<br>
+                Shots: ${playerStats.multishot}
+            `;
+        }
+
+        // Start game
+        setInterval(createEnemy, 1000);
+        setInterval(createPowerUp, 5000); // Spawn power-up every 5 seconds
+    </script>
+</body>
+</html>
