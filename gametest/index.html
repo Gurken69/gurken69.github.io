@@ -170,26 +170,41 @@
         let playerY = gameContainer.offsetHeight / 2;
         const MOVE_SPEED = 5;
         const CHEAT_CODE = [];
+        const keys = {
+            w: false,
+            a: false,
+            s: false,
+            d: false
+        };
 
+        // Track key states
         document.addEventListener('keydown', (e) => {
-            switch(e.key.toLowerCase()) {
-                case 'w':
-                    playerY = Math.max(0, playerY - MOVE_SPEED);
-                    break;
-                case 's':
-                    playerY = Math.min(gameContainer.offsetHeight, playerY + MOVE_SPEED);
-                    break;
-                case 'a':
-                    playerX = Math.max(0, playerX - MOVE_SPEED);
-                    break;
-                case 'd':
-                    playerX = Math.min(gameContainer.offsetWidth, playerX + MOVE_SPEED);
-                    break;
+            if (e.key.toLowerCase() in keys) {
+                keys[e.key.toLowerCase()] = true;
             }
-            
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (e.key.toLowerCase() in keys) {
+                keys[e.key.toLowerCase()] = false;
+            }
+        });
+
+        // Smooth movement loop
+        function gameLoop() {
+            if (keys.w) playerY = Math.max(0, playerY - MOVE_SPEED);
+            if (keys.s) playerY = Math.min(gameContainer.offsetHeight, playerY + MOVE_SPEED);
+            if (keys.a) playerX = Math.max(0, playerX - MOVE_SPEED);
+            if (keys.d) playerX = Math.min(gameContainer.offsetWidth, playerX + MOVE_SPEED);
+
             player.style.left = playerX + 'px';
             player.style.top = playerY + 'px';
-        });
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Start the game loop
+        gameLoop();
 
         // Add cheat code detection
         document.addEventListener('keypress', (e) => {
