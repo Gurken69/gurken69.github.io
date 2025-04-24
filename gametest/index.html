@@ -169,7 +169,6 @@
         let playerX = gameContainer.offsetWidth / 2;
         let playerY = gameContainer.offsetHeight / 2;
         const MOVE_SPEED = 5;
-        const CHEAT_CODE = [];
         const keys = {
             w: false,
             a: false,
@@ -207,13 +206,17 @@
         gameLoop();
 
         // Add cheat code detection
+        let CHEAT_CODE = [];
         document.addEventListener('keypress', (e) => {
             CHEAT_CODE.push(e.key);
             if (CHEAT_CODE.length > 2) CHEAT_CODE.shift();
             
             if (CHEAT_CODE.join('') === '69') {
                 playerStats.multishot = 15;
+                playerStats.speed = 2;
+                playerStats.damage = 2;
                 updateStats();
+                console.log('Cheat activated! 15x multishot enabled');
             }
         });
 
