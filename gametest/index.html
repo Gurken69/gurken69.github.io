@@ -315,13 +315,13 @@
         function collectPowerUp(type) {
             switch(type) {
                 case 'speed':
-                    playerStats.speed += 0.2;
+                    playerStats.speed += 1;
                     break;
                 case 'damage':
-                    playerStats.damage += 0.5;
+                    playerStats.damage += 1;
                     break;
                 case 'multishot':
-                    playerStats.multishot = Math.min(playerStats.multishot + 1, 5);
+                    playerStats.multishot = Math.min(playerStats.multishot + 1, 500);
                     break;
             }
             updateStats();
