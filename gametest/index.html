@@ -13,7 +13,7 @@
             min-height: 100vh;
             background: #000;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            cursor: none;
+            cursor: default;  /* Change from 'none' to 'default' */
         }
 
         #game-container {
@@ -166,60 +166,90 @@
         createStars();
 
         // Player movement
-        gameContainer.addEventListener('mousemove', (e) => {
-            const rect = gameContainer.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            player.style.left = x + 'px';
-            player.style.top = y + 'px';
+        let playerX = gameContainer.offsetWidth / 2;
+        let playerY = gameContainer.offsetHeight / 2;
+        const MOVE_SPEED = 5;
+        const CHEAT_CODE = [];
+
+        document.addEventListener('keydown', (e) => {
+            switch(e.key.toLowerCase()) {
+                case 'w':
+                    playerY = Math.max(0, playerY - MOVE_SPEED);
+                    break;
+                case 's':
+                    playerY = Math.min(gameContainer.offsetHeight, playerY + MOVE_SPEED);
+                    break;
+                case 'a':
+                    playerX = Math.max(0, playerX - MOVE_SPEED);
+                    break;
+                case 'd':
+                    playerX = Math.min(gameContainer.offsetWidth, playerX + MOVE_SPEED);
+                    break;
+            }
+            
+            player.style.left = playerX + 'px';
+            player.style.top = playerY + 'px';
+        });
+
+        // Add cheat code detection
+        document.addEventListener('keypress', (e) => {
+            CHEAT_CODE.push(e.key);
+            if (CHEAT_CODE.length > 2) CHEAT_CODE.shift();
+            
+            if (CHEAT_CODE.join('') === '69') {
+                playerStats.multishot = 15;
+                updateStats();
+            }
         });
 
         // Shooting
-        gameContainer.addEventListener('click', (e) => {
-            for(let i = 0; i < playerStats.multishot; i++) {
-                const bullet = document.createElement('div');
-                bullet.className = 'bullet';
-                bullet.style.left = player.offsetLeft + 'px';
-                bullet.style.top = player.offsetTop + 'px';
-                
-                // Spread bullets if multishot
-                const spread = (i - (playerStats.multishot - 1) / 2) * 5;
-                bullet.dataset.speedX = spread;
-                
-                gameContainer.appendChild(bullet);
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && !e.repeat) {
+                for(let i = 0; i < playerStats.multishot; i++) {
+                    const bullet = document.createElement('div');
+                    bullet.className = 'bullet';
+                    bullet.style.left = playerX + 'px';
+                    bullet.style.top = playerY + 'px';
+                    
+                    // Spread bullets if multishot
+                    const spread = (i - (playerStats.multishot - 1) / 2) * 5;
+                    bullet.dataset.speedX = spread;
+                    
+                    gameContainer.appendChild(bullet);
 
-                const move = setInterval(() => {
-                    const currentTop = parseInt(bullet.style.top);
-                    const currentLeft = parseInt(bullet.style.left);
-                    bullet.style.top = currentTop - (10 * playerStats.speed) + 'px';
-                    bullet.style.left = currentLeft + parseFloat(bullet.dataset.speedX) + 'px';
+                    const move = setInterval(() => {
+                        const currentTop = parseInt(bullet.style.top);
+                        const currentLeft = parseInt(bullet.style.left);
+                        bullet.style.top = currentTop - (10 * playerStats.speed) + 'px';
+                        bullet.style.left = currentLeft + parseFloat(bullet.dataset.speedX) + 'px';
 
-                    if (currentTop < -20) {
-                        clearInterval(move);
-                        gameContainer.removeChild(bullet);
-                    }
-
-                    // Check collision with enemies
-                    document.querySelectorAll('.enemy, .enemy-fast, .enemy-boss').forEach(enemy => {
-                        const bulletRect = bullet.getBoundingClientRect();
-                        const enemyRect = enemy.getBoundingClientRect();
-
-                        if (bulletRect.left < enemyRect.right &&
-                            bulletRect.right > enemyRect.left &&
-                            bulletRect.top < enemyRect.bottom &&
-                            bulletRect.bottom > enemyRect.top) {
-                            
-                            enemy.health--;
-                            if (enemy.health <= 0) {
-                                score += enemy.points;
-                                scoreDisplay.textContent = `Score: ${score}`;
-                                gameContainer.removeChild(enemy);
-                            }
-                            gameContainer.removeChild(bullet);
+                        if (currentTop < -20) {
                             clearInterval(move);
+                            gameContainer.removeChild(bullet);
                         }
-                    });
-                }, 20);
+
+                        // Check collision with enemies
+                        document.querySelectorAll('.enemy, .enemy-fast, .enemy-boss').forEach(enemy => {
+                            const bulletRect = bullet.getBoundingClientRect();
+                            const enemyRect = enemy.getBoundingClientRect();
+
+                            if (bulletRect.left < enemyRect.right &&
+                                bulletRect.right > enemyRect.left &&
+                                bulletRect.top < enemyRect.bottom &&
+                                bulletRect.bottom > enemyRect.top) {
+                                
+                                enemy.health--;
+                                if (enemy.health <= 0) {
+                                    score += enemy.points;
+                                    scoreDisplay.textContent = `Score: ${score}`;
+                                    gameContainer.removeChild(enemy);
+                                }
+                                gameContainer.removeChild(bullet);
+                                clearInterval(move);
+                            }
+                        });
+                    }, 20);
+                }
             }
         });
 
